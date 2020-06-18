@@ -44,41 +44,46 @@ class SudokuSet() {
     }
 }
 
-class Sudoku(initialBoard: Array<Array<Int>>) {
+class Sudoku() {
     val board: Array<Array<Int>>
     val cols: Array<SudokuSet>
     val rows: Array<SudokuSet>
     val boxes: Array<SudokuSet>
-    val box: Array<Array<Int>>
 
     init {
-
-        // todo make a deep copy
-        board = initialBoard
+        board = Array(9) { Array(9) { 0 } }
         cols = Array<SudokuSet>(9) { SudokuSet() }
         rows = Array<SudokuSet>(9) { SudokuSet() }
         boxes = Array<SudokuSet>(9) { SudokuSet() }
-
     }
 
-    fun insert(num: Int, xCoor: Int, yCoor: Int ){
+    fun initialize(initialBoard: Array<Array<Int>>) {
+        for ((y, row) in initialBoard.withIndex()) {
+            for ((x, num) in row.withIndex()) {
+                if (num != 0) {
+                    insert(num, x, y)
+                }
+            }
+        }
+    }
+
+    fun insert(num: Int, xCoor: Int, yCoor: Int) {
         // check valid then insert into space if allows
         // calculate what box they'll also be in
         cols[yCoor].addNumber(num)
         rows[xCoor].addNumber(num)
-        boxes[boxNum(xCoor,yCoor)].addNumber(num)
-
+        boxes[boxNum(xCoor, yCoor)].addNumber(num)
+        board[xCoor][yCoor] = num
     }
 
-    //todo figure out what box given x and y
-    fun boxNum(xCoor: Int, yCoor: Int) :Int{
-        //think of it like an actual box
-        val x = xCoor/3
-        val y = yCoor/3
+    // todo figure out what box given x and y
+    fun boxNum(xCoor: Int, yCoor: Int): Int {
+        // think of it like an actual box
+        val x = xCoor / 3
+        val y = yCoor / 3
 
-        return (3*x + y)
+        return (3 * x + y)
     }
-
 }
 
 class App {

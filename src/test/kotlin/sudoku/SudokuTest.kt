@@ -4,9 +4,10 @@
 package sudoku
 
 import kotlin.test.Test
+import kotlin.test.assertFailsWith
 
 class SudokuTest {
-    @Test fun emptyBoard() {
+    @Test fun initialize_emptyBoard() {
         val board = arrayOf(
             arrayOf(0, 0, 0, 0, 0, 0, 0, 0, 0),
             arrayOf(0, 0, 0, 0, 0, 0, 0, 0, 0),
@@ -19,10 +20,11 @@ class SudokuTest {
             arrayOf(0, 0, 0, 0, 0, 0, 0, 0, 0)
         )
 
-        val underTest = Sudoku(board)
-   }
+        val underTest = Sudoku()
+        underTest.initialize(board)
+    }
 
-    @Test fun unsolvedBoard() {
+    @Test fun initialize_unsolvedBoard() {
         val board = arrayOf(
             arrayOf(9, 0, 0, 0, 1, 0, 0, 0, 8),
             arrayOf(0, 1, 0, 5, 0, 0, 9, 0, 0),
@@ -35,6 +37,47 @@ class SudokuTest {
             arrayOf(7, 0, 0, 0, 3, 0, 0, 0, 5)
         )
 
-        val underTest = Sudoku(board)
-   }
+        val underTest = Sudoku()
+        underTest.initialize(board)
+    }
+
+    @Test fun insert_valid() {
+        val board = arrayOf(
+            arrayOf(9, 0, 0, 0, 1, 0, 0, 0, 8),
+            arrayOf(0, 1, 0, 5, 0, 0, 9, 0, 0),
+            arrayOf(6, 0, 0, 4, 0, 0, 2, 5, 0),
+            arrayOf(1, 0, 0, 7, 2, 0, 3, 0, 0),
+            arrayOf(0, 0, 0, 9, 0, 3, 0, 0, 0),
+            arrayOf(0, 0, 9, 0, 6, 8, 0, 0, 2),
+            arrayOf(0, 6, 1, 0, 0, 5, 0, 0, 7),
+            arrayOf(0, 0, 8, 0, 0, 9, 0, 1, 0),
+            arrayOf(7, 0, 0, 0, 3, 0, 0, 0, 5)
+        )
+
+        val underTest = Sudoku()
+        underTest.initialize(board)
+
+        underTest.insert(3, 0, 1)
+    }
+
+    @Test fun insert_invalid() {
+        val board = arrayOf(
+            arrayOf(9, 0, 0, 0, 1, 0, 0, 0, 8),
+            arrayOf(0, 1, 0, 5, 0, 0, 9, 0, 0),
+            arrayOf(6, 0, 0, 4, 0, 0, 2, 5, 0),
+            arrayOf(1, 0, 0, 7, 2, 0, 3, 0, 0),
+            arrayOf(0, 0, 0, 9, 0, 3, 0, 0, 0),
+            arrayOf(0, 0, 9, 0, 6, 8, 0, 0, 2),
+            arrayOf(0, 6, 1, 0, 0, 5, 0, 0, 7),
+            arrayOf(0, 0, 8, 0, 0, 9, 0, 1, 0),
+            arrayOf(7, 0, 0, 0, 3, 0, 0, 0, 5)
+        )
+
+        val underTest = Sudoku()
+        underTest.initialize(board)
+
+        assertFailsWith(IllegalStateException::class) {
+            underTest.insert(9, 0, 1)
+        }
+    }
 }
