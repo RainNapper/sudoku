@@ -49,13 +49,36 @@ class Sudoku(initialBoard: Array<Array<Int>>) {
     val cols: Array<SudokuSet>
     val rows: Array<SudokuSet>
     val boxes: Array<SudokuSet>
+    val box: Array<Array<Int>>
 
     init {
-        board = initialBoard.copyOf()
+
+        // todo make a deep copy
+        board = initialBoard
         cols = Array<SudokuSet>(9) { SudokuSet() }
         rows = Array<SudokuSet>(9) { SudokuSet() }
         boxes = Array<SudokuSet>(9) { SudokuSet() }
+
     }
+
+    fun insert(num: Int, xCoor: Int, yCoor: Int ){
+        // check valid then insert into space if allows
+        // calculate what box they'll also be in
+        cols[yCoor].addNumber(num)
+        rows[xCoor].addNumber(num)
+        boxes[boxNum(xCoor,yCoor)].addNumber(num)
+
+    }
+
+    //todo figure out what box given x and y
+    fun boxNum(xCoor: Int, yCoor: Int) :Int{
+        //think of it like an actual box
+        val x = xCoor/3
+        val y = yCoor/3
+
+        return (3*x + y)
+    }
+
 }
 
 class App {
